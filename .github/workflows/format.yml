@@ -17,7 +17,5 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9
-      - name: Install remark
-        run: pnpm install remark-cli
       - name: Check Markdown formatting
-        run: pnpm exec remark . -o
+        run: pnpm exec prettier --check .
