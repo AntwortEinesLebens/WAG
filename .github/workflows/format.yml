@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2023 The WAG development team
+#
+# SPDX-License-Identifier: CC0-1.0
+
+name: Check formatting of the project
+
+on: [push, pull_request]
+
+jobs:
+  remark:
+    name: Check Markdown formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: Install remark
+        run: pnpm install remark-cli
+      - name: Check Markdown formatting
+        run: pnpm exec remark . -o
