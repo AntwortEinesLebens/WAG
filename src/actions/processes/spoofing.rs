@@ -12,7 +12,7 @@ use windows::{
         System::Threading::{
             CreateProcessW, InitializeProcThreadAttributeList, OpenProcess,
             UpdateProcThreadAttribute, EXTENDED_STARTUPINFO_PRESENT, LPPROC_THREAD_ATTRIBUTE_LIST,
-            PROCESS_INFORMATION, PROCESS_SET_INFORMATION, PROC_THREAD_ATTRIBUTE_PARENT_PROCESS,
+            PROCESS_CREATE_PROCESS, PROCESS_INFORMATION, PROC_THREAD_ATTRIBUTE_PARENT_PROCESS,
             STARTUPINFOEXW, STARTUPINFOW,
         },
     },
@@ -44,12 +44,17 @@ fn spoof(executable: &str, parent_pid: u32) -> Result<(), Box<dyn Error>> {
     };
 
     let mut attributes: Box<[u8]> = vec![0; required_size].into_boxed_slice();
+    let attributes_list: Owned<LPPROC_THREAD_ATTRIBUTE_LIST> = unsafe {
+        Owned::new(LPPROC_THREAD_ATTRIBUTE_LIST(
+            attributes.as_mut_ptr() as *mut _
+        ))
+    };
     let startup_informations: STARTUPINFOEXW = STARTUPINFOEXW {
         StartupInfo: STARTUPINFOW {
             cb: size_of::<STARTUPINFOEXW>() as u32,
             ..Default::default()
         },
-        lpAttributeList: LPPROC_THREAD_ATTRIBUTE_LIST(attributes.as_mut_ptr() as *mut _),
+        lpAttributeList: *attributes_list,
     };
 
     unsafe {
@@ -60,14 +65,13 @@ fn spoof(executable: &str, parent_pid: u32) -> Result<(), Box<dyn Error>> {
             &mut required_size,
         )?;
 
+        let mut parent_process: Owned<HANDLE> =
+            Owned::new(OpenProcess(PROCESS_CREATE_PROCESS, false, parent_pid)?);
         UpdateProcThreadAttribute(
             startup_informations.lpAttributeList,
             0,
             PROC_THREAD_ATTRIBUTE_PARENT_PROCESS as usize,
-            Some(
-                &mut *Owned::new(OpenProcess(PROCESS_SET_INFORMATION, false, parent_pid)?) as *mut _
-                    as *mut _,
-            ),
+            Some(&mut *parent_process as *mut _ as *mut _),
             size_of::<HANDLE>(),
             None,
             None,
@@ -90,7 +94,7 @@ fn spoof(executable: &str, parent_pid: u32) -> Result<(), Box<dyn Error>> {
             None,
             &startup_informations.StartupInfo,
             &mut PROCESS_INFORMATION::default(),
-        )?
+        )?;
     };
 
     Ok(())
