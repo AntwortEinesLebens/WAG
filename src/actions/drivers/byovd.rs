@@ -2,10 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-// Load Vulnerable Driver
-//
-// Last update 20240224
-
 use crate::{actions::Runnable, windows::users::is_administrator};
 use clap::Parser;
 use std::{error::Error, thread, time};
@@ -19,7 +15,7 @@ use windows::{
 };
 
 #[derive(Debug, Parser)]
-pub struct Create {
+pub struct Byovd {
     #[clap(
         short = 'n',
         long,
@@ -112,8 +108,7 @@ fn create_driver_service(name: &str, details: &str, path: &str) -> bool {
     }
 }
 
-impl Runnable for Create {
-    /* Version 20230908 */
+impl Runnable for Byovd {
     fn run(&self) -> Result<(), Box<dyn Error>> {
         println!("Bring Your Own Vulnerable Driver");
 
