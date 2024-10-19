@@ -16,26 +16,11 @@ use windows::{
 
 #[derive(Debug, Parser)]
 pub struct Byovd {
-    #[clap(
-        short = 'n',
-        long,
-        required = true,
-        help = "Internal Name of the service"
-    )]
+    #[clap(required = true, help = "Internal Name of the service")]
     internal: String,
-    #[clap(
-        short = 'd',
-        long,
-        required = true,
-        help = "Displayed Name of the service"
-    )]
+    #[clap(required = true, help = "Displayed Name of the service")]
     display: String,
-    #[clap(
-        short = 'p',
-        long,
-        required = true,
-        help = "Full path to the driver eg: c:\\temp..."
-    )]
+    #[clap(required = true, help = "Full path to the driver eg: c:\\temp...")]
     path: String,
 }
 
