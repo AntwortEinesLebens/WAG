@@ -20,14 +20,9 @@ use windows::{
 
 #[derive(Debug, Parser)]
 pub struct Spoofing {
-    #[clap(short = 'e', long, required = true, help = "Path to the executable")]
+    #[clap(required = true, help = "Path to the executable")]
     executable: String,
-    #[clap(
-        short = 'p',
-        long,
-        required = true,
-        help = "Name of the parent executable"
-    )]
+    #[clap(required = true, help = "Name of the parent executable")]
     parent_executable: String,
 }
 
