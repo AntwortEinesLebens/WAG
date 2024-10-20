@@ -15,11 +15,11 @@ use windows::{
 
 #[derive(Debug, Parser)]
 pub struct Byovd {
-    #[clap(required = true, help = "Internal Name of the service")]
-    internal: String,
-    #[clap(required = true, help = "Displayed Name of the service")]
-    display: String,
-    #[clap(required = true, help = "Full path to the driver eg: c:\\temp...")]
+    #[clap(required = true, help = "Name of the service")]
+    service_name: String,
+    #[clap(required = true, help = "Displayed name of the service")]
+    displayed_name: String,
+    #[clap(required = true, help = "Path to the driver")]
     path: PathBuf,
 }
 
@@ -38,8 +38,8 @@ impl Runnable for Byovd {
 
             let service: Owned<SC_HANDLE> = Owned::new(CreateServiceW(
                 *service_manager,
-                &HSTRING::from(self.internal.as_str()),
-                &HSTRING::from(self.display.as_str()),
+                &HSTRING::from(self.service_name.as_str()),
+                &HSTRING::from(self.displayed_name.as_str()),
                 SC_MANAGER_ALL_ACCESS,
                 SERVICE_KERNEL_DRIVER,
                 SERVICE_AUTO_START,
