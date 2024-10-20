@@ -4,7 +4,10 @@
 
 use crate::{actions::Runnable, windows::processes::get_pid};
 use clap::Parser;
-use std::{error::Error, ffi::OsString, iter::once, mem::size_of, os::windows::ffi::OsStrExt};
+use std::{
+    error::Error, ffi::OsString, iter::once, mem::size_of, os::windows::ffi::OsStrExt,
+    path::PathBuf,
+};
 use windows::{
     core::{Owned, PWSTR},
     Win32::{
@@ -21,13 +24,17 @@ use windows::{
 #[derive(Debug, Parser)]
 pub struct Spoofing {
     #[clap(required = true, help = "Path to the executable")]
-    executable: String,
+    executable: PathBuf,
     #[clap(required = true, help = "Name of the parent executable")]
     parent_executable: String,
 }
 
 impl Runnable for Spoofing {
     fn run(&self) -> Result<(), Box<dyn Error>> {
+        if !self.executable.try_exists()? || !self.executable.is_file() {
+            return Ok(());
+        }
+
         let mut required_size: usize = 0;
 
         unsafe {
@@ -79,7 +86,7 @@ impl Runnable for Spoofing {
             CreateProcessW(
                 None,
                 PWSTR(
-                    OsString::from(self.executable.as_str())
+                    OsString::from(self.executable.as_os_str())
                         .encode_wide()
                         .chain(once(0))
                         .collect::<Vec<_>>()
