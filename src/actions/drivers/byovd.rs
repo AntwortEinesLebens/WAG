@@ -29,6 +29,10 @@ impl Runnable for Byovd {
             return Ok(());
         }
 
+        if !self.path.try_exists()? || !self.path.is_file() {
+            return Ok(());
+        }
+
         unsafe {
             let service_manager: Owned<SC_HANDLE> = Owned::new(OpenSCManagerW(
                 PCWSTR::null(),
