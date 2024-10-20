@@ -5,13 +5,14 @@
 use windows::{
     core::{Owned, Result as WindowsResult},
     Win32::{
+        Foundation::BOOL,
         Security::{AllocateAndInitializeSid, CheckTokenMembership, PSID, SECURITY_NT_AUTHORITY},
         System::SystemServices::{DOMAIN_ALIAS_RID_ADMINS, SECURITY_BUILTIN_DOMAIN_RID},
     },
 };
 
 pub fn is_administrator() -> WindowsResult<bool> {
-    let mut is_admin: bool = false;
+    let mut is_admin: BOOL = false.into();
 
     unsafe {
         let mut administrators_group: Owned<PSID> = Owned::new(PSID::default());
@@ -30,12 +31,8 @@ pub fn is_administrator() -> WindowsResult<bool> {
             &mut *administrators_group,
         )?;
 
-        CheckTokenMembership(
-            None,
-            *administrators_group,
-            &mut is_admin as *mut _ as *mut _,
-        )?;
+        CheckTokenMembership(None, *administrators_group, &mut is_admin as *mut _)?;
     }
 
-    Ok(is_admin)
+    Ok(is_admin.as_bool())
 }
