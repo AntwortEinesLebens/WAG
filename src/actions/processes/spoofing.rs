@@ -26,77 +26,76 @@ pub struct Spoofing {
     parent_executable: String,
 }
 
-fn spoof(executable: &str, parent_pid: u32) -> Result<(), Box<dyn Error>> {
-    let mut required_size: usize = 0;
-
-    unsafe {
-        let _ = InitializeProcThreadAttributeList(
-            LPPROC_THREAD_ATTRIBUTE_LIST::default(),
-            1,
-            0,
-            &mut required_size,
-        );
-    };
-
-    let mut attributes: Box<[u8]> = vec![0; required_size].into_boxed_slice();
-    let attributes_list: Owned<LPPROC_THREAD_ATTRIBUTE_LIST> = unsafe {
-        Owned::new(LPPROC_THREAD_ATTRIBUTE_LIST(
-            attributes.as_mut_ptr() as *mut _
-        ))
-    };
-    let startup_informations: STARTUPINFOEXW = STARTUPINFOEXW {
-        StartupInfo: STARTUPINFOW {
-            cb: size_of::<STARTUPINFOEXW>() as u32,
-            ..Default::default()
-        },
-        lpAttributeList: *attributes_list,
-    };
-
-    unsafe {
-        InitializeProcThreadAttributeList(
-            startup_informations.lpAttributeList,
-            1,
-            0,
-            &mut required_size,
-        )?;
-
-        let mut parent_process: Owned<HANDLE> =
-            Owned::new(OpenProcess(PROCESS_CREATE_PROCESS, false, parent_pid)?);
-        UpdateProcThreadAttribute(
-            startup_informations.lpAttributeList,
-            0,
-            PROC_THREAD_ATTRIBUTE_PARENT_PROCESS as usize,
-            Some(&mut *parent_process as *mut _ as *mut _),
-            size_of::<HANDLE>(),
-            None,
-            None,
-        )?;
-
-        CreateProcessW(
-            None,
-            PWSTR(
-                OsString::from(executable)
-                    .encode_wide()
-                    .chain(once(0))
-                    .collect::<Vec<_>>()
-                    .as_mut_ptr(),
-            ),
-            None,
-            None,
-            false,
-            EXTENDED_STARTUPINFO_PRESENT,
-            None,
-            None,
-            &startup_informations.StartupInfo,
-            &mut PROCESS_INFORMATION::default(),
-        )?;
-    };
-
-    Ok(())
-}
-
 impl Runnable for Spoofing {
     fn run(&self) -> Result<(), Box<dyn Error>> {
-        Ok(spoof(&self.executable, get_pid(&self.parent_executable)?)?)
+        let mut required_size: usize = 0;
+
+        unsafe {
+            let _ = InitializeProcThreadAttributeList(
+                LPPROC_THREAD_ATTRIBUTE_LIST::default(),
+                1,
+                0,
+                &mut required_size,
+            );
+        };
+
+        let mut attributes: Box<[u8]> = vec![0; required_size].into_boxed_slice();
+        let attributes_list: Owned<LPPROC_THREAD_ATTRIBUTE_LIST> = unsafe {
+            Owned::new(LPPROC_THREAD_ATTRIBUTE_LIST(
+                attributes.as_mut_ptr() as *mut _
+            ))
+        };
+        let startup_informations: STARTUPINFOEXW = STARTUPINFOEXW {
+            StartupInfo: STARTUPINFOW {
+                cb: size_of::<STARTUPINFOEXW>() as u32,
+                ..Default::default()
+            },
+            lpAttributeList: *attributes_list,
+        };
+
+        unsafe {
+            InitializeProcThreadAttributeList(
+                startup_informations.lpAttributeList,
+                1,
+                0,
+                &mut required_size,
+            )?;
+
+            let mut parent_process: Owned<HANDLE> = Owned::new(OpenProcess(
+                PROCESS_CREATE_PROCESS,
+                false,
+                get_pid(self.parent_executable.as_str())?,
+            )?);
+            UpdateProcThreadAttribute(
+                startup_informations.lpAttributeList,
+                0,
+                PROC_THREAD_ATTRIBUTE_PARENT_PROCESS as usize,
+                Some(&mut *parent_process as *mut _ as *mut _),
+                size_of::<HANDLE>(),
+                None,
+                None,
+            )?;
+
+            CreateProcessW(
+                None,
+                PWSTR(
+                    OsString::from(self.executable.as_str())
+                        .encode_wide()
+                        .chain(once(0))
+                        .collect::<Vec<_>>()
+                        .as_mut_ptr(),
+                ),
+                None,
+                None,
+                false,
+                EXTENDED_STARTUPINFO_PRESENT,
+                None,
+                None,
+                &startup_informations.StartupInfo,
+                &mut PROCESS_INFORMATION::default(),
+            )?;
+        };
+
+        Ok(())
     }
 }
