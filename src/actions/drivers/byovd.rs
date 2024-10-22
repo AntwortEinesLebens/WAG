@@ -7,9 +7,13 @@ use clap::Parser;
 use std::{error::Error, path::PathBuf};
 use windows::{
     core::{Owned, HSTRING, PCWSTR},
-    Win32::System::Services::{
-        CreateServiceW, OpenSCManagerW, StartServiceW, SC_HANDLE, SC_MANAGER_ALL_ACCESS,
-        SC_MANAGER_CREATE_SERVICE, SERVICE_AUTO_START, SERVICE_ERROR_IGNORE, SERVICE_KERNEL_DRIVER,
+    Win32::{
+        Foundation::GENERIC_READ,
+        System::Services::{
+            CreateServiceW, OpenSCManagerW, OpenServiceW, StartServiceW, SC_HANDLE,
+            SC_MANAGER_ALL_ACCESS, SC_MANAGER_CREATE_SERVICE, SERVICE_AUTO_START,
+            SERVICE_ERROR_IGNORE, SERVICE_KERNEL_DRIVER,
+        },
     },
 };
 
@@ -39,6 +43,16 @@ impl Runnable for Byovd {
                 PCWSTR::null(),
                 SC_MANAGER_CREATE_SERVICE,
             )?);
+
+            if OpenServiceW(
+                *service_manager,
+                &HSTRING::from(self.service_name.as_str()),
+                GENERIC_READ.0,
+            )
+            .is_ok()
+            {
+                return Ok(());
+            }
 
             let service: Owned<SC_HANDLE> = Owned::new(CreateServiceW(
                 *service_manager,
