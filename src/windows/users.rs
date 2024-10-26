@@ -3,21 +3,20 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 use windows::{
-    core::Error as WindowsError,
+    core::{Owned, Result as WindowsResult},
     Win32::{
         Foundation::BOOL,
-        Security::{
-            AllocateAndInitializeSid, CheckTokenMembership, FreeSid, PSID, SECURITY_NT_AUTHORITY,
-        },
+        Security::{AllocateAndInitializeSid, CheckTokenMembership, PSID, SECURITY_NT_AUTHORITY},
         System::SystemServices::{DOMAIN_ALIAS_RID_ADMINS, SECURITY_BUILTIN_DOMAIN_RID},
     },
 };
 
-pub fn is_administrator() -> Result<bool, WindowsError> {
-    let is_admin: *mut BOOL = &mut BOOL::from(false);
-    let mut administrators_group: PSID = PSID::default();
+pub fn is_administrator() -> WindowsResult<bool> {
+    let mut is_admin: BOOL = false.into();
 
     unsafe {
+        let mut administrators_group: Owned<PSID> = Owned::new(PSID::default());
+
         AllocateAndInitializeSid(
             &SECURITY_NT_AUTHORITY,
             2,
@@ -29,16 +28,11 @@ pub fn is_administrator() -> Result<bool, WindowsError> {
             0,
             0,
             0,
-            &mut administrators_group,
+            &mut *administrators_group,
         )?;
 
-        let result: Result<(), WindowsError> =
-            CheckTokenMembership(None, administrators_group, is_admin);
-
-        FreeSid(administrators_group);
-
-        result?;
+        CheckTokenMembership(None, *administrators_group, &mut is_admin as *mut _)?;
     }
 
-    Ok(unsafe { (*is_admin).into() })
+    Ok(is_admin.as_bool())
 }

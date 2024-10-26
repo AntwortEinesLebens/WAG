@@ -2,11 +2,11 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use crate::actions::{drivers::create::Create, Runnable};
+use crate::actions::{drivers::byovd::Byovd, Runnable};
 use clap::{Args, Subcommand};
 use std::error::Error;
 
-pub mod create;
+pub mod byovd;
 
 #[derive(Debug, Args)]
 pub struct Drivers {
@@ -16,13 +16,13 @@ pub struct Drivers {
 
 #[derive(Debug, Subcommand)]
 pub enum Commands {
-    Create(Create),
+    Byovd(Byovd),
 }
 
 impl Runnable for Drivers {
-    fn run(&self) -> Result<i32, Box<dyn Error>> {
+    fn run(&self) -> Result<(), Box<dyn Error>> {
         match &self.command {
-            Commands::Create(create) => create as &dyn Runnable,
+            Commands::Byovd(byovd) => byovd as &dyn Runnable,
         }
         .run()
     }
