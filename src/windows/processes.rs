@@ -5,6 +5,7 @@
 use std::{
     error::Error,
     fmt::{Display, Formatter, Result as FormatterResult},
+    mem::size_of,
 };
 use windows::{
     core::{Owned, HSTRING},
