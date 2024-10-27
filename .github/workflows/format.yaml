@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Hack setup-python cache
+      - name: Create requirements file for setup-python
         run: touch ./requirements.txt
       - name: Install Python
         uses: actions/setup-python@v5
@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Hack setup-python cache
+      - name: Create requirements file for setup-python
         run: touch ./requirements.txt
       - name: Install Python
         uses: actions/setup-python@v5
