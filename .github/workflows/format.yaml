@@ -11,9 +11,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Create requirements file for setup-python
+        run: touch ./requirements.txt
       - name: Install Python
         uses: actions/setup-python@v5
         with:
+          python-version: '3.13'
           cache: pip
       - name: Install yamlfix
         run: pip install yamlfix
@@ -25,9 +28,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Create requirements file for setup-python
+        run: touch ./requirements.txt
       - name: Install Python
         uses: actions/setup-python@v5
         with:
+          python-version: '3.13'
           cache: pip
       - name: Install Mdformat
         run: pip install mdformat
