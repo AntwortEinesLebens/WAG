@@ -2,14 +2,14 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-mod actions;
 mod cli;
+mod traces;
 mod windows;
 
-use actions::Runnable;
 use clap::Parser;
 use cli::{Arguments, Commands};
 use std::error::Error;
+use traces::Runnable;
 
 fn banner() {
     let banner: &str = "
@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     banner();
 
     match Arguments::parse().command {
-        Commands::Actions(action) => action.run()?,
+        Commands::Traces(action) => action.run()?,
     };
 
     Ok(())

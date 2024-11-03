@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use crate::actions::{drivers::Drivers, processes::Processes};
+use crate::traces::{drivers::Drivers, processes::Processes};
 use clap::{Args, Subcommand};
 use std::error::Error;
 
@@ -10,7 +10,7 @@ pub mod drivers;
 pub mod processes;
 
 #[derive(Debug, Args)]
-pub struct Actions {
+pub struct Traces {
     #[clap(subcommand)]
     pub command: Commands,
 }
@@ -25,7 +25,7 @@ pub trait Runnable {
     fn run(&self) -> Result<(), Box<dyn Error>>;
 }
 
-impl Runnable for Actions {
+impl Runnable for Traces {
     fn run(&self) -> Result<(), Box<dyn Error>> {
         match &self.command {
             Commands::Drivers(drivers) => drivers as &dyn Runnable,

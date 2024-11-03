@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use crate::{actions::Runnable, windows::processes::get_pid};
+use crate::{traces::Runnable, windows::processes::get_pid};
 use clap::Parser;
 use std::{
     error::Error, ffi::OsString, iter::once, mem::size_of, os::windows::ffi::OsStrExt,

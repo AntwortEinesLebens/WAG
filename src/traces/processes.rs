@@ -2,27 +2,27 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use crate::actions::{drivers::byovd::Byovd, Runnable};
+use crate::traces::{processes::spoofing::Spoofing, Runnable};
 use clap::{Args, Subcommand};
 use std::error::Error;
 
-pub mod byovd;
+pub mod spoofing;
 
 #[derive(Debug, Args)]
-pub struct Drivers {
+pub struct Processes {
     #[clap(subcommand)]
     pub command: Commands,
 }
 
 #[derive(Debug, Subcommand)]
 pub enum Commands {
-    Byovd(Byovd),
+    Spoofing(Spoofing),
 }
 
-impl Runnable for Drivers {
+impl Runnable for Processes {
     fn run(&self) -> Result<(), Box<dyn Error>> {
         match &self.command {
-            Commands::Byovd(byovd) => byovd as &dyn Runnable,
+            Commands::Spoofing(spoofing) => spoofing as &dyn Runnable,
         }
         .run()
     }
