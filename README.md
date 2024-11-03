@@ -5,20 +5,20 @@ SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
 <div align="center">
-  <a href="https://github.com/frack113/WAG/">
-    <img src="https://raw.githubusercontent.com/frack113/WAG/main/media/logo.svg" alt="Logo" />
+  <a href="https://github.com/frack113/MalwareTracesGenerator/">
+    <img src="https://raw.githubusercontent.com/frack113/MalwareTracesGenerator/refs/heads/main/media/logo.svg" alt="Logo" />
   </a>
 
-<h3 align="center">Windows Artifacts Generator</h3>
+<h3 align="center">Malware Traces Generator</h3>
 
 <p align="center">
-    Generate malware artifacts for detection tests
+    Generate malware traces for detection tests
     <br />
-    <a href="https://github.com/frack113/WAG/issues/">
+    <a href="https://github.com/frack113/MalwareTracesGenerator/issues/">
       Report Bug
     </a>
     ·
-    <a href="https://github.com/frack113/WAG/issues/">
+    <a href="https://github.com/frack113/MalwareTracesGenerator/issues/">
       Request Feature
     </a>
     <br />
@@ -57,13 +57,13 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 ## 👀 About the project
 
-[Windows Artifacts Generator][wag] is a tool for creating malware artifacts for detection tests.
+[Malware Traces Generator][mtg] is a tool for creating malware traces for detection tests.
 
 ### ❓ Why
 
 It's useful for testing configurations, rules, or your Endpoint Detection and Response. \
-It's not intended to fully simulate the behavior of malware but to reproduce the steps that led to artifact creation. \
-By avoiding full and complex simulations, [Windows Artifacts Generator][wag] seeks to be simple but nonetheless powerful.
+It's not intended to fully simulate the behavior of malware but to reproduce the steps that led to traces creation. \
+By avoiding full and complex simulations, [Malware Traces Generator][mtg] seeks to be simple but nonetheless powerful.
 
 ## 🚀 Getting started
 
@@ -80,7 +80,7 @@ Currently, this project is only available on [crates.io]. \
 In order to install it, just enter this command in your favorite terminal:
 
 ```sh
-cargo install windows-artifacts-generator
+cargo install malware-traces-generator
 
 ```
 
@@ -89,7 +89,7 @@ cargo install windows-artifacts-generator
 1. Clone the repository
 
    ```sh
-   git clone https://github.com/frack113/WAG/
+   git clone https://github.com/frack113/MalwareTracesGenerator/
    ```
 
 1. Build and run the project!
@@ -102,17 +102,17 @@ After these steps, the application will be in the target directory.
 
 ### 🥷 Quick examples
 
-Now that [WAG] is installed, you can start generating some artifacts! \
+Now that [Malware Traces Generator][mtg] is installed, you can start generating some traces! \
 For example, you can create a file like this:
 
 ```sh
-wag actions files create --name "example.txt"
+mtg actions files create --name "example.txt"
 ```
 
-Or you can generate artifacts from a configuration file:
+Or you can generate traces from a configuration file:
 
 ```sh
-wag generate --file "$YOUR_CONFIGURATIONS_FILE_PATH"
+mtg generate --file "$YOUR_CONFIGURATIONS_FILE_PATH"
 ```
 
 To see more information about what you can do, see the [documentation].
@@ -148,5 +148,5 @@ Distributed under the [GPL 3.0 or later] license.
 [gpl 3.0 or later]: ./LICENSES/GPL-3.0-or-later.txt
 [heroicons]: https://heroicons.com/
 [mit]: ./LICENSES/MIT.txt
+[mtg]: https://github.com/frack113/MalwareTracesGenerator/
 [sil ofl]: ./LICENSES/OFL-1.1.txt
-[wag]: https://github.com/frack113/WAG/
