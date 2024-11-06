@@ -6,7 +6,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 <div align="center">
   <a href="https://github.com/frack113/MalwareTracesGenerator/">
-    <img src="https://raw.githubusercontent.com/frack113/MalwareTracesGenerator/refs/heads/main/media/logo.svg" alt="Logo" />
+    <img src="https://raw.githubusercontent.com/frack113/MalwareTracesGenerator"
+      "/refs/heads/main/media/logo.svg" alt="Logo" />
   </a>
 
 <h3 align="center">Malware Traces Generator</h3>
