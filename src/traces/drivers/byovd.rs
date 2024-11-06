@@ -1,8 +1,8 @@
-// SPDX-FileCopyrightText: 2023 The WAG development team
+// SPDX-FileCopyrightText: 2023 The MalwareTracesGenerator development team
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use crate::{actions::Runnable, windows::users::is_administrator};
+use crate::{traces::Runnable, windows::users::is_administrator};
 use clap::Parser;
 use std::{error::Error, path::PathBuf};
 use windows::{

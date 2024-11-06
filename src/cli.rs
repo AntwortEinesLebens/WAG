@@ -1,8 +1,8 @@
-// SPDX-FileCopyrightText: 2023 The WAG development team
+// SPDX-FileCopyrightText: 2023 The MalwareTracesGenerator development team
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use crate::actions::Actions;
+use crate::traces::Traces;
 use clap::{Parser, Subcommand};
 
 #[derive(Debug, Parser)]
@@ -15,5 +15,5 @@ pub struct Arguments {
 
 #[derive(Debug, Subcommand)]
 pub enum Commands {
-    Actions(Actions),
+    Traces(Traces),
 }

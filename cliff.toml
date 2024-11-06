@@ -1,11 +1,11 @@
-# SPDX-FileCopyrightText: 2023 The WAG development team
+# SPDX-FileCopyrightText: 2023 The MalwareTracesGenerator development team
 # SPDX-FileCopyrightText: 2023 The git-cliff development team
 #
 # SPDX-License-Identifier: CC0-1.0
 
 [changelog]
 header = """
-[![logo](https://raw.githubusercontent.com/frack113/WAG/media/logo.svg)](https://github.com/frack113/WAG/)\n
+[![logo](https://raw.githubusercontent.com/frack113/MalwareTracesGenerator/media/logo.svg)](https://github.com/frack113/MalwareTracesGenerator/)\n
 """
 body = """
 {%- macro remote_url() -%}
@@ -50,7 +50,7 @@ footer = """
 """
 trim = true
 postprocessors = [
-  { pattern = '<REPO>', replace = "https://github.com/frack113/WAG/" },
+  { pattern = '<REPO>', replace = "https://github.com/frack113/MalwareTracesGenerator/" },
 ]
 
 [git]
