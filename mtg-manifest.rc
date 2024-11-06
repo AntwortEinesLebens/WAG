@@ -6,7 +6,7 @@
 #define RT_MANIFEST 24
 1 RT_MANIFEST "mtg.exe.manifest"
 
-IDI_ICON1 ICON "media/wag.ico"
+IDI_ICON1 ICON "media/mtg.ico"
 
 1 VERSIONINFO
 FILEVERSION 1,0,0
