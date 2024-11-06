@@ -144,7 +144,7 @@ Distributed under the [GPL 3.0 or later] license.
 [agbama ulimhuka]: https://github.com/ulims/
 [cargo]: https://doc.rust-lang.org/stable/cargo/
 [crates.io]: https://crates.io/
-[documentation]: https://frack113.github.io/WAG/
+[documentation]: https://frack113.github.io/MalwareTracesGenerator/
 [gpl 3.0 or later]: ./LICENSES/GPL-3.0-or-later.txt
 [heroicons]: https://heroicons.com/
 [mit]: ./LICENSES/MIT.txt
